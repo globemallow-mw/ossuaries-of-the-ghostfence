@@ -32,7 +32,7 @@ local function getCalmLevel()
     return level
 end
 
-local function calmSkellies()
+local function calmGhosties()
     for _, cell in pairs(tes3.getActiveCells()) do
         -- if not validCells[cell.id] then return end
         for reference in cell:iterateReferences(tes3.objectType.creature) do
@@ -53,7 +53,7 @@ local function calmSkellies()
         end
     end
 end
-event.register("simulate", calmSkellies)
+event.register("simulate", calmGhosties)
 
 --[[
     At the start of every frame, 
