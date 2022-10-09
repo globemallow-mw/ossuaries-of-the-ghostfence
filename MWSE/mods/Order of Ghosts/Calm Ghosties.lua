@@ -61,8 +61,8 @@ event.register("simulate", calmGhosties)
     if the player is wearing Order of Ghosts armor,
     and if the creature is a ghost,
     store their initial fight value,
-    if the sghost is hostile,
+    if the ghost is hostile,
     set their fight value as initial fight value minus calmLevel, mininum is 50.
-    if you are not wearing the cuirass
+    if you are not wearing enough pieces of armor
     the ghost return being hostile
 ]]
