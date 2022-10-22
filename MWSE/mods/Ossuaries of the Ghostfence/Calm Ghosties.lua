@@ -1,10 +1,13 @@
 local log = require("logging.logger").new({
-    name = "Order of Ghosts",
+    name = "Ossuaries of the Ghostfence",
     logLevel = "DEBUG"
 })
 local validCells = {
+    ["Eastern Catacombs"] = true,
     ["Ghostgate, Hall of Ghosts"] = true,
-    ["Ghostgate, Tower of Dawn"] = true
+    ["Ghostgate, Tower of Dawn"] = true,
+    ["Southern Catacombs"] = true,
+    ["Western Catacombs"] = true
 }
 local isGhosty = {
     ["ancestor_ghost"] = true,
