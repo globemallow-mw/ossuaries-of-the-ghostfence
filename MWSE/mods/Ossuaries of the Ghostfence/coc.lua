@@ -14,12 +14,12 @@ local locData = {
         exMarker = {
             position = tes3vector3.new(56140, 59148, 776),
             orientation = tes3vector3.new(0, 0, -1.4)
+        },
+        inMarker = {
+            cell = "Ossuary of Seht",
+            position = tes3vector3.new(-960, 10560, 16320),
+            orientation = tes3vector3.new(0, 0, -1.57)
         }
-        -- inMarker = {
-        --    cell = "Ossuary of Seht",
-        --     position = tes3vector3.new(),
-        --     orientation = tes3vector3.new()
-        -- }
     },
     ["ossuary of vehk"] = {
         exMarker = {

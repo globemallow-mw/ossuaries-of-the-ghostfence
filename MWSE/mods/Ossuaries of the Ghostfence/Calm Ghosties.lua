@@ -69,3 +69,13 @@ event.register("simulate", calmGhosties)
     if you are not wearing enough pieces of armor
     the ghost return being hostile
 ]]
+
+--[[
+    where to get the full set in a non violent way: 
+    boots: in a chest in ghostgate, hall of ghosts bedroom
+    bracers: in a chest in the training room in hall of the order
+    cuirass: in a chest underwater in western catacombs
+    greaves: in northmost catacomb room in western catacombs
+    hood: in a chest in the training room in hall of the order
+    pauldrons: on a chest in ghostgate, hall of ghosts bedroom
+]]
