@@ -5,7 +5,7 @@ local locData = {
             orientation = tes3vector3.new(0, 0, -0.46)
         },
         inMarker = {
-            cell = "Ossuary of Ayem",
+            cell = "Ossuary of Ayem, Great Hall",
             position = tes3vector3.new(6352, 5584, 17152),
             orientation = tes3vector3.new(0, 0, -3.14)
         }
