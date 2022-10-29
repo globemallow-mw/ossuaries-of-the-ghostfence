@@ -9,4 +9,4 @@
 - Regulus V, for the [goblin figurine](https://www.nexusmods.com/morrowind/mods/43593)
 - Vegetto and RandomPal, for the [corprus tentacles](https://www.nexusmods.com/morrowind/mods/49738?tab=description) used to make the grotesque corprus
 - Autoclock, for the [bone spider and bone crab](https://www.nexusmods.com/morrowind/mods/48662)
-- Melchior 
+- 
