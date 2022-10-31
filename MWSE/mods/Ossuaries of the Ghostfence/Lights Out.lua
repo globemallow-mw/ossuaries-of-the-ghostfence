@@ -1,6 +1,6 @@
 local log = require("logging.logger").new({
     name = "Ossuaries of the Ghostfence",
-    logLevel = "DEBUG"
+    logLevel = "INFO"
 })
 
 local lightsBackOn
