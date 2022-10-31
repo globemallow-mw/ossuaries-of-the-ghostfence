@@ -1,6 +1,6 @@
 local log = require("logging.logger").new({
     name = "OotG Sixth House Quest",
-    logLevel = "DEBUG"
+    logLevel = "INFO"
 })
 local sixthHouseQuestID = "GG_6thHouse"
 local isWesternCatacombsRunner = {
@@ -20,9 +20,10 @@ local dagothID = "GG_6_ash_ghoul_nasro"
 local troopers = {
     "GG_alynu_menas", "GG_dartis_iba", "GG_dralane_murith", "GG_tennus_dolovas"
 }
+local skullID = "GG_Bleeding_Skull_Identified"
 
 local function fleshsHeartTooltip(e)
-    if e.object.id == "GG_Bleeding_Skull_Identified" then
+    if e.object.id == skullID then
         local block = e.tooltip:createBlock{}
         block.minWidth = 1
         block.maxWidth = 440
@@ -40,15 +41,16 @@ event.register("uiObjectTooltip", fleshsHeartTooltip)
 
 --- @param e damageEventData
 local function bleedingSkullEffect(e)
-    if tes3.getItemCount({
-        reference = tes3.player,
-        item = "GG_Misc_Bleeding_Skull"
-    }) > 0 then
+    if tes3.getItemCount({reference = tes3.player, item = skullID}) > 0 then
+        log:debug("player has a bleeding skull in their inventory")
         if e.reference == tes3.player then
+            log:debug("player is taking damage!")
             if e.damage >= tes3.player.mobile.health.current then
+                log:debug(
+                    "the damage the player will take will kill the player!")
                 tes3.removeItem({
                     reference = tes3.player,
-                    item = "GG_Misc_Bleeding_Skull",
+                    item = skullID,
                     playSound = false
                 })
                 tes3.playSound({sound = "restoration hit"})
