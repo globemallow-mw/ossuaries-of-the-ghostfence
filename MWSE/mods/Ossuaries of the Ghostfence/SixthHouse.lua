@@ -307,13 +307,23 @@ end
 
 local function bouncerForceGreetPlayer()
     if tes3.player.cell.id == "Ossuary of Ayem, Bone Pit" then
+        log:debug("player is in cell Ossuary of Ayem, Bone Pit")
         if not tes3.player.data.OotG.bouncerGreeted then
+            log:debug("player has not been forcegreeted by Broder")
             local bouncerRef = tes3.getReference(bouncerID)
-            if not bouncerRef.mobile.isDead and not bouncerRef.disable and
-                bouncerRef.mobile.playerDistance < 224 then
-                local wasShown = tes3.showDialogueMenu({reference = bouncerID})
-                if wasShown then
-                    tes3.player.data.OotG.bouncerGreeted = true
+            if not bouncerRef.mobile.isDead then
+                log:debug("Broder is not dead")
+                if not bouncerRef.disabled then
+                    log:debug("Broder is not disabled")
+                    if bouncerRef.mobile.playerDistance < 224 then
+                        log:debug("Broder is close to the player")
+                        local wasShown =
+                            tes3.showDialogueMenu({reference = bouncerID})
+                        if wasShown then
+                            tes3.player.data.OotG.bouncerGreeted = true
+                            log:debug("Broder greeted the player")
+                        end
+                    end
                 end
             end
         end
