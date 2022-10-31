@@ -61,24 +61,31 @@ end
 event.register("damage", bleedingSkullEffect)
 
 local function trooperForceGreetPlayer()
-    if tes3.player.cell.id == "Western Catacombs" then
-        local dagothRef = tes3.getReference(dagothID)
-        if tes3.getJournalIndex {id = sixthHouseQuestID} < 60 then
-            if dagothRef.mobile.isDead then
-                for _, trooperID in pairs(troopers) do
-                    local trooperRef = tes3.getReference(trooperID)
-                    if not trooperRef.mobile.inCombat and
-                        trooperRef.mobile.playerDistance < 224 then
-                        if tes3.testLineOfSight({
-                            reference1 = trooperRef,
-                            reference2 = tes3.player
-                        }) then
-                            local wasShown =
-                                tes3.showDialogueMenu({reference = trooperRef})
-                            if wasShown then
-                                tes3.player.data.OotG.trooperGreeted = true
-                                return
-                            end
+    if tes3.player.cell.id ~= "Western Catacombs" then return end
+    local dagothRef = tes3.getReference(dagothID)
+    if tes3.getJournalIndex {id = sixthHouseQuestID} >= 60 then return end
+    if tes3.player.data.OotG.trooperGreeted then return end
+    if not dagothRef.mobile.isDead then return end
+    for _, trooperID in pairs(troopers) do
+        log:debug("%s scanned", trooperID)
+        local trooperRef = tes3.getReference(trooperID)
+        if not trooperRef.mobile.inCombat then
+            log:debug("%s is not in combat", trooperID)
+            if trooperRef.mobile.playerDistance < 256 then
+                log:debug("%s is close to the player", trooperID)
+                if trooperRef.mobile.position:distance(dagothRef.mobile.position) >=
+                    256 then
+                    log:debug("%s is far away enough from dagoth nasro",
+                              trooperID)
+                    if tes3.testLineOfSight({
+                        reference1 = trooperRef,
+                        reference2 = tes3.player
+                    }) then
+                        local wasShown =
+                            tes3.showDialogueMenu({reference = trooperRef})
+                        if wasShown then
+                            tes3.player.data.OotG.trooperGreeted = true
+                            return
                         end
                     end
                 end
@@ -302,8 +309,8 @@ local function bouncerForceGreetPlayer()
     if tes3.player.cell.id == "Ossuary of Ayem, Bone Pit" then
         if not tes3.player.data.OotG.bouncerGreeted then
             local bouncerRef = tes3.getReference(bouncerID)
-            if not bouncerRef.mobile.isDead and bouncerRef.mobile.playerDistance <
-                224 then
+            if not bouncerRef.mobile.isDead and not bouncerRef.disable and
+                bouncerRef.mobile.playerDistance < 224 then
                 local wasShown = tes3.showDialogueMenu({reference = bouncerID})
                 if wasShown then
                     tes3.player.data.OotG.bouncerGreeted = true
@@ -316,11 +323,10 @@ end
 --- @param e cellChangedEventData
 local function onOssuaryOfAyemCellChanged(e)
     if e.cell.id == "Ossuary of Ayem, Bone Pit" then
-        -- the player has reported back to the Prefect, re-disable Broder Favel and the locked door
+        -- the player has killed Dagoth Nasro, re-disable Broder Favel and the locked door
         if tes3.getJournalIndex {id = sixthHouseQuestID} >= 50 then
             tes3.setEnabled({reference = bouncerID, enabled = false})
             tes3.setEnabled({reference = bouncerDoorID, enabled = false})
-            event.unregister("cellChanged", onOssuaryOfAyemCellChanged)
             return
             -- the player has received the Sixth House quest,
             -- enable Broder Favel and forcegreet the player
@@ -350,16 +356,15 @@ local function onWesternCatacombsCellChanged(e)
                     tes3.setEnabled({reference = npcRef, enabled = true})
                 end
             end
-            -- position the urns
-            tes3.getReference("GG_o_UrnAsh_03_6th_01").position =
+            -- position the urns (the code doesn't work)
+            --[[tes3.getReference("GG_o_UrnAsh_03_6th_01").position =
                 tes3.getReference("GG_o_UrnAsh_03_6th_01").startingPosition
             tes3.getReference("GG_o_UrnAsh_03_6th_01").rotation =
                 tes3.getReference("GG_o_UrnAsh_03_6th_01").startingOrientation
             tes3.getReference("GG_o_UrnAsh_03_6th_02").position =
                 tes3.getReference("GG_o_UrnAsh_03_6th_02").startingPosition
             tes3.getReference("GG_o_UrnAsh_03_6th_02").rotation =
-                tes3.getReference("GG_o_UrnAsh_03_6th_02").startingOrientation
-            event.unregister("cellChanged", onWesternCatacombsCellChanged)
+                tes3.getReference("GG_o_UrnAsh_03_6th_02").startingOrientation]]
             return
         elseif tes3.getJournalIndex {id = sixthHouseQuestID} >= 10 then
             -- the player has received the Sixth House quest,
@@ -392,26 +397,17 @@ event.register("fadersCreated", createDreamerFader)]]
 
 local function onLoaded()
     tes3.player.data.OotG = tes3.player.data.OotG or {}
-    -- Only register this event if the player hasn't reported back to the Prefect
-    if tes3.getJournalIndex {id = sixthHouseQuestID} < 70 then
-        event.register("cellChanged", onWesternCatacombsCellChanged)
-    end
-    -- Only register this event if the player hasn't killed Dagoth Nasro or has killed Dagoth but hasn't received the Bleeding Skull 
-    if tes3.getJournalIndex {id = sixthHouseQuestID} < 50 then
-        event.register("cellChanged", onOssuaryOfAyemCellChanged)
-        event.register("simulate", bouncerForceGreetPlayer)
-        event.register("infoGetText", onBouncerInfoGetText)
-        -- event.register("simulate", sergeantAITravel)
-        event.register("damage", blockDreamerDamage)
-        event.register("death", dreamerExplode)
-        -- event.register("simulate", stageBattle)
-        event.register("simulate", dagothForceGreetPlayer)
-        event.register("death", onDagothNasroDeath)
-        event.register("simulate", trooperForceGreetPlayer)
-    end
-    -- Only register this event if the player hasn't spoken to Sergeant Llevi
-    --[[if tes3.getJournalIndex {id = sixthHouseQuestID} < 20 then
-        event.register("journal", forceExitSergeantDialog)
-    end]]
+    event.register("cellChanged", onWesternCatacombsCellChanged)
+    event.register("cellChanged", onOssuaryOfAyemCellChanged)
+    event.register("simulate", bouncerForceGreetPlayer)
+    event.register("infoGetText", onBouncerInfoGetText)
+    -- event.register("simulate", sergeantAITravel)
+    event.register("damage", blockDreamerDamage)
+    event.register("death", dreamerExplode)
+    -- event.register("simulate", stageBattle)
+    event.register("simulate", dagothForceGreetPlayer)
+    event.register("death", onDagothNasroDeath)
+    event.register("simulate", trooperForceGreetPlayer)
+    -- event.register("journal", forceExitSergeantDialog)
 end
 event.register("loaded", onLoaded)
