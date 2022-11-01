@@ -32,7 +32,7 @@ local function fleshsHeartTooltip(e)
         block.paddingAllSides = 4
         local label = (block:createLabel{
             id = tes3ui.registerID("GG_Bleeding_Skull_desc"),
-            text = "Save One Life"
+            text = "Take One Death Blow for the Carrier"
         })
         label.wrapText = true
     end
