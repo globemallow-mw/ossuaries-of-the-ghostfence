@@ -13,3 +13,11 @@
 - Pherim, tronvillain, nONatee, for the [Bleeding Skull](https://www.nexusmods.com/morrowind/mods/46012)
 - Melchior Dahrk, for the [skeleton golem](https://www.nexusmods.com/morrowind/mods/22189)
 - N'Wahs and Mushrooms Team (Koxae, zaebok_kun, Axemagister), who made the green flame from [Concept Art Palace](https://www.nexusmods.com/morrowind/mods/48136) used at the ossuary of Vehk
+
+# Walkthrougg/Spoiler!
+
+SPOILER ALERT! SPOILER ALERT! SPOILER ALERT! 
+
+## Dwemer Ruins Puzzle
+
+Oops, you got trapped by cave-in, what now? You see that big machine in the main room? There's a level on the floor next to it. But if you pull it now, nothing will happen. There are three other these machines in the three rooms ahead and there is a crank on each of them. Activate them all and then pull the level. BOMB! It seemed there is a way out. If you are in the lava room right now, the exit door is right in front of you. Nothing happens when you activate the door? But do you see the Dwemer Junction Box on the door? The powered coherer to open the door is hidden in a minecart off to the side. Congratulation, you have successfully beaten this level. <3
