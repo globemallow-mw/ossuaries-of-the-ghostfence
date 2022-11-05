@@ -77,7 +77,7 @@ local shallNotPassDoor = "GG_catacombs_door"
 local function getDistanceOfClosestDoor(creaPosition)
     local minDistance = math.huge
     local minDoorRef
-    for doorRef in cell:iterateReferences(tes3.objectType.door) do
+    for doorRef in tes3.player.cell:iterateReferences(tes3.objectType.door) do
         if doorRef.object.id == shallNotPassDoor then
             local distance = doorRef.position:distance(creaPosition)
             if distance <= minDistance then
