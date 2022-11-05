@@ -14,7 +14,7 @@
 - Melchior Dahrk, for the [skeleton golem](https://www.nexusmods.com/morrowind/mods/22189)
 - N'Wahs and Mushrooms Team (Koxae, zaebok_kun, Axemagister), who made the green flame from [Concept Art Palace](https://www.nexusmods.com/morrowind/mods/48136) used at the ossuary of Vehk
 
-# Walkthrougg/Spoiler!
+# Walkthrough/Spoiler!
 
 SPOILER ALERT! SPOILER ALERT! SPOILER ALERT! 
 
