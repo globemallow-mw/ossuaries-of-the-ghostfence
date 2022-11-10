@@ -34,21 +34,21 @@ local locData = {
     },
     ["eastern catacombs"] = {
         inMarker = {
-            cell = "Eastern Catacombs",
+            cell = "Ghostfence, Eastern Catacombs",
             position = tes3vector3.new(-320, 128, 0),
             orientation = tes3vector3.new(0, 0, 0)
         }
     },
     ["southern catacombs"] = {
         inMarker = {
-            cell = "Southern Catacombs",
+            cell = "Ghostfence, Southern Catacombs",
             position = tes3vector3.new(-384, 0, -48),
             orientation = tes3vector3.new(0, 0, 1.55)
         }
     },
     ["western catacombs"] = {
         inMarker = {
-            cell = "Western Catacombs",
+            cell = "Ghostfence, Western Catacombs",
             position = tes3vector3.new(1539, 14790, 1298),
             orientation = tes3vector3.new(0, 0, -3.12)
         }
@@ -82,7 +82,7 @@ event.register("UIEXP:sandboxConsole", function(e)
 end)
 
 -- lua console command examples:
--- coc("southern catacombs")
+-- coc "southern catacombs"
 -- coc("ossuary of ayem","ex")
--- coc("ossuary of seht")
+-- coc "ossuary of seht"
 -- coc("ossuary of vehk","in")

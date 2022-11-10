@@ -9,8 +9,18 @@ local troopers = {
     "GG_alynu_menas", "GG_dartis_iba", "GG_dralane_murith", "GG_tennus_dolovas"
 }
 local skullID = "GG_Bleeding_Skull_Identified"
+local isDamageHealthEffect = {
+    [tes3.effect.fireDamage] = true,
+    [tes3.effect.shockDamage] = true,
+    [tes3.effect.frostDamage] = true,
+    [tes3.effect.drainHealth] = true,
+    [tes3.effect.damageHealth] = true,
+    [tes3.effect.poison] = true,
+    [tes3.effect.absorbHealth] = true,
+    [tes3.effect.sunDamage] = true
+}
 
-local function fleshsHeartTooltip(e)
+local function bleedingSkullTooltip(e)
     if e.object.id == skullID then
         local block = e.tooltip:createBlock{}
         block.minWidth = 1
@@ -25,17 +35,46 @@ local function fleshsHeartTooltip(e)
         label.wrapText = true
     end
 end
-event.register("uiObjectTooltip", fleshsHeartTooltip)
+
+--- @param e spellResistEventData
+local function onSpellResistBleedingSkullEffect(e)
+    if tes3.getItemCount({reference = tes3.player, item = skullID}) > 0 and
+        e.target == tes3.player and e.effect and
+        isDamageHealthEffect[e.effect.object.id] then
+        log:debug("spell effect %s max magnitude is %s", e.effect.object.name,
+                  e.effect.max)
+        if e.effect.max >= tes3.player.mobile.health.current then
+            log:debug(
+                "the max damage the player will take will kill the player!")
+            e.resistedPercent = 100
+            timer.delayOneFrame(function()
+                if tes3.getItemCount({reference = tes3.player, item = skullID}) >
+                    0 then
+                    tes3.removeItem({
+                        reference = tes3.player,
+                        item = skullID,
+                        playSound = false
+                    })
+                    tes3.playSound({sound = "restoration hit"})
+                    tes3.messageBox({
+                        message = "The Bleeding Skull took the damage for you."
+                    })
+                end
+            end, timer.simulate)
+        end
+    end
+end
 
 --- @param e damageEventData
-local function bleedingSkullEffect(e)
+local function onDamageBleedingSkullEffect(e)
     if tes3.getItemCount({reference = tes3.player, item = skullID}) > 0 then
-        log:debug("player has a bleeding skull in their inventory")
         if e.reference == tes3.player then
-            if e.attacker then
-                log:debug("player is taking damage from %s!", e.attacker)
-            else
-                log:debug("player is taking damage!")
+            if e.damage then
+                log:debug("player is taking this amount of damage: %s!",
+                          e.damage)
+            end
+            if e.source then
+                log:debug("player is taking damage from source: %s!", e.source)
             end
             if e.damage >= tes3.player.mobile.health.current then
                 log:debug(
@@ -112,18 +151,22 @@ local function checkIfEnterFromWesternCatacombs(e)
     end
 end
 
-local function onLoad()
-    tes3.player.data.OotG = tes3.player.data.OotG or {}
-    event.register("cellChanged", checkIfEnterFromWesternCatacombs)
-    event.register("infoGetText", onBouncerInfoGetText)
-    event.register("simulate", trooperForceGreetPlayer)
-    event.register("damage", bleedingSkullEffect)
-end
-event.register("loaded", onLoad)
-
 local function changeBleedingSkullValue()
     local skull = tes3.getObject(skullID)
     if skull then skull.value = 250 end
 end
-event.register("initialized", changeBleedingSkullValue)
+
+local function onInit()
+    event.register("loaded", function(e)
+        tes3.player.data.OotG = tes3.player.data.OotG or {}
+    end)
+    event.register("cellChanged", checkIfEnterFromWesternCatacombs)
+    event.register("infoGetText", onBouncerInfoGetText)
+    event.register("simulate", trooperForceGreetPlayer)
+    event.register("damage", onDamageBleedingSkullEffect)
+    event.register("spellResist", onSpellResistBleedingSkullEffect)
+    event.register("uiObjectTooltip", bleedingSkullTooltip)
+    changeBleedingSkullValue()
+end
+event.register("initialized", onInit)
 

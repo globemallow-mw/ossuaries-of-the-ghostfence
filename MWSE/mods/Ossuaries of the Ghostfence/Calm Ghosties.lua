@@ -148,7 +148,6 @@ local function skellyShallNotPass()
         end
     end
 end
-event.register("simulate", skellyShallNotPass)
 
 --[[
     if the player is in the catacombs,
@@ -190,7 +189,11 @@ local function calmGhosties()
         end
     end
 end
-event.register("simulate", calmGhosties)
+
+event.register("initialized", function(e)
+    event.register("simulate", skellyShallNotPass)
+    event.register("simulate", calmGhosties)
+end)
 
 --[[
     At the start of every frame, 
