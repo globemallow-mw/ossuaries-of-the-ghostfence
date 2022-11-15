@@ -1,3 +1,6 @@
+--  This portion of the code should not be running
+--  it has broader use and should be a standalone mod 
+-- 
 local locData = {
     ["ossuary of ayem"] = {
         exMarker = {
@@ -57,27 +60,29 @@ local locData = {
 
 event.register("UIEXP:sandboxConsole", function(e)
     e.sandbox.coc = function(locName, exOrIn)
-        local isEx = (exOrIn == "ex")
-        local isIn = (exOrIn == "in") or not exOrIn
-        if not ((isEx and locData[locName:lower()].exMarker) or
-            (isIn and locData[locName:lower()].inMarker)) then
-            tes3.messageBox("invalid location data")
-            return
+        if locData[locName:lower()] then
+            local isEx = (exOrIn == "ex")
+            local isIn = (exOrIn == "in") or not exOrIn
+            if not ((isEx and locData[locName:lower()].exMarker) or
+                (isIn and locData[locName:lower()].inMarker)) then
+                tes3.messageBox("invalid location data")
+                return
+            end
+            local executed
+            if isEx then
+                executed = tes3.positionCell({
+                    position = locData[locName:lower()].exMarker.position,
+                    orientation = locData[locName:lower()].exMarker.orientation
+                })
+            else
+                executed = tes3.positionCell({
+                    cell = locData[locName:lower()].inMarker.cell,
+                    position = locData[locName:lower()].inMarker.position,
+                    orientation = locData[locName:lower()].inMarker.orientation
+                })
+            end
+            if not executed then tes3.messageBox("command failed") end
         end
-        local executed
-        if isEx then
-            executed = tes3.positionCell({
-                position = locData[locName:lower()].exMarker.position,
-                orientation = locData[locName:lower()].exMarker.orientation
-            })
-        else
-            executed = tes3.positionCell({
-                cell = locData[locName:lower()].inMarker.cell,
-                position = locData[locName:lower()].inMarker.position,
-                orientation = locData[locName:lower()].inMarker.orientation
-            })
-        end
-        if not executed then tes3.messageBox("command failed") end
     end
 end)
 
