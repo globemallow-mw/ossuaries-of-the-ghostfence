@@ -1,0 +1,10 @@
+[package]
+name = "Memento Mori"
+authors = ["Kalinter, globemallow, JosephMcKean, ProfArmitage"]
+version = "1.2.5"
+
+[dependencies.mods."Tamriel_Data"]
+plugin = "Tamriel_Data.esm"
+
+[dependencies.mods."OAAB_Data"]
+plugin = "OAAB_Data.esm"
