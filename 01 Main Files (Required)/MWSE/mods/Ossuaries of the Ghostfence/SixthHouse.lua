@@ -137,6 +137,7 @@ local function changeBleedingSkullValue()
 end
 
 local function onInit()
+	if not tes3.isModActive("Memento Mori.esp") then return end
 	event.register("loaded", function(e)
 		tes3.player.data.OotG = tes3.player.data.OotG or {}
 	end)
